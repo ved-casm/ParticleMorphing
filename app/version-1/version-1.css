@@ -1,0 +1,98 @@
+/* Version 1 — O'WOW story sections, in the existing sage-on-black language. */
+
+.v1-wordmark { font-family: var(--font-geist-sans), Arial, sans-serif !important; font-size: 22px !important; font-weight: 700 !important; letter-spacing: .06em !important; }
+.v1-nav-home { display: none; }
+
+.v1-sec { position: relative; padding: 130px 8.5%; background: #0a0d0b; border-top: 1px solid #ffffff0c; overflow: hidden; }
+.v1-sec h2 { margin: 26px 0 0; }
+.v1-head { display: grid; grid-template-columns: 1fr minmax(260px, 380px); column-gap: 60px; align-items: end; }
+.v1-head .eyebrow { grid-column: 1 / -1; }
+.v1-head p { font-size: 14px; max-width: 380px; padding-bottom: 8px; }
+
+.v1-reveal { opacity: 0; transform: translate3d(0, 22px, 0); transition: opacity .9s ease, transform 1s cubic-bezier(.16, 1, .3, 1); transition-delay: var(--d, 0ms); }
+.v1-reveal.is-in { opacity: 1; transform: none; }
+
+/* 03 Problem */
+.v1-problem { background: #080a09; }
+.v1-problem h2 { max-width: 1050px; font-size: clamp(36px, 4.3vw, 66px); }
+.v1-versus { margin-top: 70px; display: grid; grid-template-columns: 1fr 1px 1fr; gap: 48px; align-items: start; }
+.v1-versus i { align-self: stretch; background: linear-gradient(transparent, #a6b99a55, transparent); }
+.v1-versus span { font: 9px monospace; letter-spacing: 1.6px; text-transform: uppercase; color: #8b9a80; }
+.v1-versus p { margin-top: 16px; font: clamp(20px, 1.8vw, 28px)/1.3 Georgia, serif; letter-spacing: -.5px; color: #e4e7dd; }
+.v1-versus div:first-child p { color: #7e877a; }
+.v1-lede { margin-top: 60px; max-width: 620px; font-size: 14px; }
+
+/* 04 Capture */
+.v1-cards { margin-top: 70px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.v1-card { position: relative; padding: 26px 22px 30px; border: 1px solid #ffffff10; border-radius: 4px; background: #0d110e; transition: border-color .3s, transform .4s cubic-bezier(.2, .8, .2, 1), opacity .9s ease; }
+.v1-card:hover { border-color: #a6b99a44; transform: translateY(-4px); }
+.v1-card svg { color: #b5c7a3; }
+.v1-card > span { position: absolute; top: 26px; right: 22px; font: 9px monospace; color: #6c7b68; }
+.v1-card h3 { margin: 44px 0 14px; font: 22px/1.15 Georgia, serif; letter-spacing: -.4px; }
+.v1-card p { font-size: 12.5px; line-height: 1.65; color: #9aa594; }
+
+/* 06 Process */
+.v1-process { background: #080a09; }
+.v1-steps { list-style: none; margin: 76px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #ffffff14; }
+.v1-steps li { position: relative; padding: 28px 28px 10px 0; }
+.v1-steps li + li { padding-left: 28px; border-left: 1px solid #ffffff0d; }
+.v1-steps li::before { content: ""; position: absolute; top: -1px; left: 0; width: 40%; height: 1px; background: #b5c7a3; transform-origin: left; transform: scaleX(0); transition: transform 1.2s cubic-bezier(.16, 1, .3, 1) var(--d, 0ms); }
+.v1-steps li.is-in::before { transform: scaleX(1); }
+.v1-step-top { display: flex; justify-content: space-between; align-items: center; color: #8b9a80; font: 9px monospace; letter-spacing: 1.2px; }
+.v1-steps h3 { margin: 34px 0 14px; font: 26px Georgia, serif; letter-spacing: -.5px; }
+.v1-steps p { font-size: 12.5px; color: #9aa594; max-width: 250px; }
+.v1-note { margin-top: 56px; font: italic 18px Georgia, serif; color: #a6b99a; }
+
+/* 07 Focus areas (inside the shards section) */
+.capabilities.v1-focus { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+.v1-focus article > span { display: inline-flex; align-items: center; gap: 10px; color: #a6b99a; }
+
+/* 08 Places */
+.v1-places { padding-left: 0; padding-right: 0; }
+.v1-places .v1-head { padding: 0 8.5%; grid-template-columns: 1fr; }
+.v1-marquee { margin-top: 56px; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.v1-marquee + .v1-marquee { margin-top: 18px; }
+.v1-marquee > div { display: flex; gap: 14px; width: max-content; animation: v1-slide 60s linear infinite; }
+.v1-marquee.rev > div { animation-direction: reverse; animation-duration: 70s; }
+.v1-marquee span { display: inline-flex; align-items: baseline; gap: 12px; padding: 14px 22px; border: 1px solid #ffffff12; border-radius: 999px; font: 20px Georgia, serif; letter-spacing: -.3px; color: #dfe4d8; white-space: nowrap; background: #0d110e; }
+.v1-marquee small { font: 9px monospace; letter-spacing: 1.3px; text-transform: uppercase; color: #7f8b79; }
+@keyframes v1-slide { to { transform: translateX(-50%); } }
+.v1-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* 09 Manifesto */
+.v1-manifesto { text-align: center; padding-top: 150px; padding-bottom: 150px; background: radial-gradient(ellipse at 50% 60%, #18251c55, transparent 60%), #080a09; }
+.v1-manifesto .eyebrow { justify-content: center; }
+.v1-manifesto blockquote { margin: 34px auto 0; max-width: 1000px; font: clamp(30px, 3.6vw, 56px)/1.12 Georgia, serif; letter-spacing: -.04em; color: #edece4; }
+.v1-manifesto blockquote em { color: #a6b99a; }
+.v1-manifesto p { margin: 34px auto 26px; max-width: 520px; font-size: 14px; }
+
+/* Footer */
+.v1-footer { flex-wrap: wrap; gap: 20px 32px; }
+.v1-footer nav { display: flex; gap: 22px; font-size: 10px; color: #a6b39b; }
+.v1-footer nav a:hover { color: #edece4; }
+
+@media (max-width: 1000px) {
+  .v1-sec { padding: 100px 6%; }
+  .v1-cards, .v1-steps, .capabilities.v1-focus { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .v1-steps li:nth-child(3) { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 600px) {
+  .v1-wordmark { font-size: 18px !important; }
+  .nav-links .v1-nav-home { display: inline; }
+  .nav-links.open { flex-wrap: wrap; row-gap: 14px; }
+  .v1-sec { padding: 80px 7%; }
+  .v1-head { grid-template-columns: 1fr; }
+  .v1-head p { margin-top: 20px; }
+  .v1-problem h2 { font-size: 34px; }
+  .v1-versus { grid-template-columns: 1fr; gap: 26px; margin-top: 44px; }
+  .v1-versus i { height: 1px; width: 100%; }
+  .v1-cards, .v1-steps, .capabilities.v1-focus { grid-template-columns: 1fr; }
+  .v1-steps li, .v1-steps li + li { padding: 24px 0 8px; border-left: 0; }
+  .v1-steps li + li { border-top: 1px solid #ffffff0d; }
+  .v1-marquee span { font-size: 16px; padding: 11px 16px; }
+  .v1-manifesto { padding-top: 100px; padding-bottom: 100px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v1-reveal { opacity: 1; transform: none; transition: none; }
+  .v1-marquee > div { animation: none; }
+}

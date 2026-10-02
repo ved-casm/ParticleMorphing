@@ -157,7 +157,7 @@ export async function globe(count: number, R = 2.7) {
 
 export async function buildShape(key: Exclude<ShapeKey, "text">, count: number): Promise<Float32Array> {
   switch (key) {
-    case "logo": return text(count, "owow");
+    case "logo": return text(count, "O’WOW");
     case "globe": return globe(count);
     case "helix": return helix(count);
     case "cube": return cube(count);

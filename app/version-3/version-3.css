@@ -19,7 +19,7 @@
 .d1-root a:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 
 .d1-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: space-between; align-items: center; padding: 20px var(--d1-pad); }
-.d1-mark { font-size: 24px; font-weight: 800; letter-spacing: -2.2px; display: flex; align-items: center; gap: 9px; }
+.d1-mark { font-size: 19px; font-weight: 700; letter-spacing: .06em; display: flex; align-items: center; gap: 9px; }
 .d1-mark i { width: 5px; height: 5px; border-radius: 50%; background: var(--d1-ink); }
 .d1-nav nav { display: flex; gap: 6px; }
 .d1-nav nav a { display: inline-flex; align-items: center; gap: 6px; font: 500 10px var(--font-d1-mono), monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--d1-muted); padding: 9px 12px; transition: color .2s; }

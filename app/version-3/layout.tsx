@@ -7,7 +7,7 @@ const display = Inter_Tight({ variable: "--font-d1-display", subsets: ["latin"],
 const mono = IBM_Plex_Mono({ variable: "--font-d1-mono", subsets: ["latin"], weight: ["400", "500"] });
 
 export const metadata: Metadata = {
-  title: "OWOW — Version 3 · Depth field",
+  title: "O’WOW — Version 3 · Depth field",
   description: "Human demonstrations rendered as scroll-scrubbed depth particles.",
 };
 

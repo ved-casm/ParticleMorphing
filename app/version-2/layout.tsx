@@ -6,7 +6,7 @@ const display = Instrument_Serif({ variable: "--font-dm-display", subsets: ["lat
 const mono = IBM_Plex_Mono({ variable: "--font-dm-mono", subsets: ["latin"], weight: ["400", "500"] });
 
 export const metadata: Metadata = {
-  title: "OWOW — Version 2 · Particle morph",
+  title: "O’WOW — Version 2 · Particle morph",
   description: "An interactive GPGPU particle-morphing playground: wordmark, globe, helix, cube, heart and more.",
 };
 

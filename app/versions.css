@@ -19,7 +19,7 @@
 .vh-mono { font: 500 10px/1.4 var(--font-vh-mono), monospace; letter-spacing: 1.2px; text-transform: uppercase; color: var(--vh-muted); }
 
 .vh-head { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-bottom: 1px solid var(--vh-line); }
-.vh-mark { font-family: var(--font-geist-sans), Arial, sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -2.2px; display: flex; align-items: center; gap: 8px; }
+.vh-mark { font-family: var(--font-geist-sans), Arial, sans-serif; font-size: 19px; font-weight: 700; letter-spacing: .06em; display: flex; align-items: center; gap: 8px; }
 .vh-mark i { width: 5px; height: 5px; background: var(--vh-ink); }
 
 .vh-intro { padding: clamp(36px, 6vh, 80px) 0 clamp(28px, 4.5vh, 52px); display: grid; gap: 18px; }

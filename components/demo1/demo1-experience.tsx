@@ -87,7 +87,7 @@ export default function Demo1Experience() {
 
   return <div className="d1-root" data-ready={ready}>
     <header className="d1-nav">
-      <Link href="/" className="d1-mark">owow<i /></Link>
+      <Link href="/" className="d1-mark">O’WOW<i /></Link>
       <nav>
         <Link href="/"><ArrowLeft size={12} /> All versions</Link>
         <a href="#d1-close">Contact</a>
@@ -123,9 +123,9 @@ export default function Demo1Experience() {
       <span className="d1-tag">The data layer for physical AI</span>
       <h2>Human experience, <em>captured for machines.</em></h2>
       <p>Egocentric and third-person video, depth, motion and task annotations, collected with the care your models deserve. Every frame you just scrolled through started as a person doing something real.</p>
-      <Link href="/version-1#contact" className="d1-button">Build with our data <ArrowUpRight size={15} /></Link>
+      <a href="https://calendly.com/useowow/ds?back=1" target="_blank" rel="noreferrer" className="d1-button">Talk to a founder <ArrowUpRight size={15} /></a>
       <footer>
-        <span>© {new Date().getFullYear()} OWOW</span>
+        <span>© {new Date().getFullYear()} OWOW Talents Inc · Palo Alto, CA</span>
         <span>Footage: OWOW &amp; Pexels contributors · Depth: Depth Anything V2</span>
       </footer>
     </section>

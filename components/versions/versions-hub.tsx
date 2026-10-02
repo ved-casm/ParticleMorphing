@@ -39,7 +39,7 @@ function Card({ v }: { v: (typeof VERSIONS)[number] }) {
 export default function VersionsHub() {
   return <main className="vh-root">
     <header className="vh-head">
-      <span className="vh-mark">owow<i /></span>
+      <span className="vh-mark">O’WOW<i /></span>
       <span className="vh-mono">Three directions · {new Date().getFullYear()}</span>
     </header>
     <section className="vh-intro">

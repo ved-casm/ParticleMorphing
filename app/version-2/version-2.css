@@ -32,7 +32,7 @@
 /* Loader */
 .dm-loader { position: fixed; inset: 0; z-index: 60; background: var(--dm-bg); display: grid; place-content: center; text-align: center; gap: 18px; transition: opacity .9s ease .35s, visibility 0s linear 1.3s; }
 .dm-loader.is-done { opacity: 0; visibility: hidden; }
-.dm-loader-mark { font-size: 30px; font-weight: 700; letter-spacing: -2px; }
+.dm-loader-mark { font-size: 26px; font-weight: 700; letter-spacing: .06em; }
 .dm-loader-mark span { font: 500 9px var(--font-dm-mono), monospace; letter-spacing: 1.6px; color: var(--dm-cyan); margin-left: 8px; text-transform: uppercase; vertical-align: super; }
 .dm-loader p { font: 500 10px/1.5 var(--font-dm-mono), monospace; letter-spacing: 1px; color: var(--dm-ink); }
 .dm-loader-bar { position: fixed; left: var(--dm-pad); right: var(--dm-pad); bottom: 54px; height: 1px; background: var(--dm-line); }
@@ -44,7 +44,7 @@
 /* Navigation — a split bar: back link + mark on the left, segmented section switch in the middle, CTA right. */
 .dm-nav { position: fixed; top: 18px; left: var(--dm-pad); right: var(--dm-pad); z-index: 40; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; }
 .dm-back { justify-self: start; display: none; }
-.dm-mark { grid-column: 1; justify-self: start; font-size: 26px; font-weight: 800; letter-spacing: -2.4px; display: flex; align-items: center; gap: 10px; }
+.dm-mark { grid-column: 1; justify-self: start; font-size: 19px; font-weight: 700; letter-spacing: .06em; display: flex; align-items: center; gap: 10px; }
 .dm-mark i { width: 7px; height: 7px; border-radius: 50%; background: var(--dm-cyan); box-shadow: 0 0 14px var(--dm-cyan); }
 .dm-links { grid-column: 2; display: flex; gap: 2px; padding: 4px; border: 1px solid var(--dm-line); border-radius: 12px; background: var(--dm-glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 .dm-links a { font: 500 10px var(--font-dm-mono), monospace; letter-spacing: 1.1px; text-transform: uppercase; padding: 9px 14px; border-radius: 8px; color: var(--dm-muted); transition: color .25s, background .25s; }

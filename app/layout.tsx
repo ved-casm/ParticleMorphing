@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OWOW — Human experience. Robot intelligence.",
-  description: "Real-world human demonstrations for the next generation of physical AI. OWOW turns human experience into robotics training data.",
+  title: "O’WOW — Data Intelligence for Physical AI",
+  description: "Robots learn from what they’re shown. We know what’s worth showing, then capture, structure, and verify it at global scale.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
