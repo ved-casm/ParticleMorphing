@@ -148,11 +148,12 @@ function barkTexture() {
 }
 
 function rockTexture() {
-  return canvasTexture(512, 512, ctx => {
-    const img = ctx.createImageData(512, 512);
-    for (let y = 0; y < 512; y++) for (let x = 0; x < 512; x++) {
-      const n = fbm3(x * 0.02, y * 0.02, 1.7, 5), m = fbm3(x * 0.09, y * 0.09, 9.1, 3);
-      const v = 60 + n * 90 + (m - 0.5) * 50, i = (y * 512 + x) * 4;
+  // 256² is plenty at this distance and keeps the JS noise bake ~4x cheaper.
+  return canvasTexture(256, 256, ctx => {
+    const img = ctx.createImageData(256, 256);
+    for (let y = 0; y < 256; y++) for (let x = 0; x < 256; x++) {
+      const n = fbm3(x * 0.04, y * 0.04, 1.7, 4), m = fbm3(x * 0.18, y * 0.18, 9.1, 2);
+      const v = 60 + n * 90 + (m - 0.5) * 50, i = (y * 256 + x) * 4;
       img.data[i] = v * 0.82; img.data[i + 1] = v * 0.88; img.data[i + 2] = v; img.data[i + 3] = 255;
     }
     ctx.putImageData(img, 0, 0);
@@ -162,7 +163,7 @@ function rockTexture() {
 /* ---------- geometry builders ---------- */
 
 function rockGeometry(seed: number) {
-  const g = new THREE.IcosahedronGeometry(1, 5), p = g.attributes.position as THREE.BufferAttribute, v = new THREE.Vector3();
+  const g = new THREE.IcosahedronGeometry(1, 4), p = g.attributes.position as THREE.BufferAttribute, v = new THREE.Vector3();
   for (let i = 0; i < p.count; i++) {
     v.fromBufferAttribute(p, i).normalize();
     const big = fbm3(v.x * 1.4 + seed, v.y * 1.4, v.z * 1.4, 4), fine = fbm3(v.x * 6 + seed, v.y * 6, v.z * 6, 3);
@@ -218,7 +219,7 @@ ${TO_LINEAR}
 float h2(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
 float n2(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f);
   return mix(mix(h2(i),h2(i+vec2(1,0)),f.x),mix(h2(i+vec2(0,1)),h2(i+vec2(1,1)),f.x),f.y); }
-float fbm(vec2 p){ float v=0.0,a=0.5; for(int i=0;i<6;i++){ v+=a*n2(p); p=p*2.02+vec2(3.1,1.7); a*=0.5; } return v; }
+float fbm(vec2 p){ float v=0.0,a=0.5; for(int i=0;i<4;i++){ v+=a*n2(p); p=p*2.02+vec2(3.1,1.7); a*=0.5; } return v; }
 void main(){
   vec3 d=normalize(vDir); float y=d.y;
   vec3 col=mix(vec3(0.10,0.17,0.36),vec3(0.012,0.02,0.055),smoothstep(-0.02,0.55,y));
@@ -340,13 +341,13 @@ export class Environment {
 
     // Sky.
     this.skyMat = new THREE.ShaderMaterial({ vertexShader: SKY_VERT, fragmentShader: SKY_FRAG, side: THREE.BackSide, depthWrite: false, uniforms: { uTime: { value: 0 }, uMoon: { value: moonDir } } });
-    this.sky = new THREE.Mesh(new THREE.SphereGeometry(600, 48, 24), this.skyMat);
+    this.sky = new THREE.Mesh(new THREE.SphereGeometry(600, 32, 16), this.skyMat);
     this.sky.renderOrder = -2; this.sky.frustumCulled = false;
     this.group.add(this.sky);
     this.track(this.skyMat, this.sky.geometry);
 
     // Terrain.
-    const seg = opts.mobile ? 160 : opts.low ? 200 : 256;
+    const seg = opts.mobile ? 96 : opts.low ? 110 : 140;
     const tg = new THREE.PlaneGeometry(360, 360, seg, seg); tg.rotateX(-Math.PI / 2);
     const tp = tg.attributes.position as THREE.BufferAttribute, cols = new Float32Array(tp.count * 3), c = new THREE.Color();
     for (let i = 0; i < tp.count; i++) {
@@ -375,20 +376,25 @@ export class Environment {
     });
     (this.water.material as THREE.ShaderMaterial).uniforms.color.value = srgbVec("#050a1a");
     this.water.rotation.x = -Math.PI / 2;
+    // The reflection re-renders the whole scene; refreshing it every other frame halves that cost
+    // and is invisible on gently rippling water.
+    const reflect = this.water.onBeforeRender.bind(this.water);
+    let tick = 0;
+    this.water.onBeforeRender = (...args) => { if (tick++ % 2 === 0) reflect(...args); };
     this.group.add(this.water);
     this.disposables.push({ dispose: () => this.water.dispose() });
 
     // Grass.
     const bp: number[] = [], bi: number[] = [];
     const rows = 4;
-    for (let i = 0; i <= rows; i++) { const y = i / rows, w = 0.075 * (1 - y * 0.9); bp.push(-w, y, 0, w, y, 0); }
+    for (let i = 0; i <= rows; i++) { const y = i / rows, w = 0.11 * (1 - y * 0.9); bp.push(-w, y, 0, w, y, 0); }
     bp.push(0, 1.08, 0);
     for (let i = 0; i < rows; i++) { const a = i * 2; bi.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
     bi.push(rows * 2, rows * 2 + 1, rows * 2 + 2);
     const grassGeo = new THREE.InstancedBufferGeometry();
     grassGeo.setAttribute("position", new THREE.Float32BufferAttribute(bp, 3));
     grassGeo.setIndex(bi);
-    const count = opts.mobile ? 22000 : opts.low ? 38000 : 70000, off = new Float32Array(count * 3), par = new Float32Array(count * 4);
+    const count = opts.mobile ? 9000 : opts.low ? 16000 : 26000, off = new Float32Array(count * 3), par = new Float32Array(count * 4);
     let placed = 0, guard = 0;
     const islandBlades = Math.round(count * 0.06);
     while (placed < count && guard++ < count * 6) {
@@ -453,7 +459,7 @@ export class Environment {
     this.buildTree(islandCenter, rnd);
 
     // Fireflies drifting over the grass near the tree.
-    const flyCount = opts.mobile ? 40 : 90, fp = new Float32Array(flyCount * 3), fs = new Float32Array(flyCount);
+    const flyCount = opts.mobile ? 30 : 60, fp = new Float32Array(flyCount * 3), fs = new Float32Array(flyCount);
     const tp0 = islandCenter;
     for (let i = 0; i < flyCount; i++) {
       const a = rnd() * TAU, r = 2 + rnd() * 16;
@@ -470,7 +476,7 @@ export class Environment {
 
   private buildTree(base: THREE.Vector3, rnd: () => number) {
     const branches: THREE.BufferGeometry[] = [], tips: { p: THREE.Vector3; d: THREE.Vector3 }[] = [];
-    const MAX = this.opts.mobile ? 4 : 5, up = new THREE.Vector3(0, 1, 0), tmp = new THREE.Vector3();
+    const MAX = this.opts.mobile || this.opts.low ? 4 : 5, up = new THREE.Vector3(0, 1, 0), tmp = new THREE.Vector3();
     const grow = (start: THREE.Vector3, dir: THREE.Vector3, len: number, radius: number, depth: number) => {
       const pts = [start.clone()], d = dir.clone(), n = 5;
       let p = start.clone();
@@ -521,7 +527,7 @@ export class Environment {
         transformed.x += sin(uTime * 1.9 + ph * 1.3) * 0.05 * position.y;
       #endif`);
     };
-    const per = this.opts.mobile ? 40 : this.opts.low ? 45 : 55, total = tips.length * per;
+    const per = this.opts.mobile ? 22 : this.opts.low ? 26 : 34, total = tips.length * per;
     const leaves = new THREE.InstancedMesh(leafGeo, leafMat, total);
     const o = new THREE.Object3D(), center = new THREE.Vector3(0, 7, 0), out = new THREE.Vector3(), col = new THREE.Color();
     const palette = ["#2f5fe0", "#4f8dff", "#6cc8ff", "#6d63ff", "#3a7bff", "#9ad8ff"].map(h => new THREE.Color(h));
@@ -532,7 +538,7 @@ export class Environment {
       out.copy(o.position).sub(center).normalize().add(tmp.set(0, 0.6, 0)).add(t.d).normalize();
       o.lookAt(tmp.copy(o.position).add(out));
       o.rotateX(-Math.PI / 2 + (rnd() - 0.5) * 0.9); o.rotateY((rnd() - 0.5) * 2.4); o.rotateZ((rnd() - 0.5) * 0.8);
-      o.scale.setScalar(0.32 + rnd() * 0.22);
+      o.scale.setScalar(0.38 + rnd() * 0.26);
       o.updateMatrix();
       leaves.setMatrixAt(li, o.matrix);
       col.copy(palette[Math.floor(rnd() * palette.length)]).lerp(palette[Math.floor(rnd() * palette.length)], rnd());
@@ -560,7 +566,7 @@ export class Environment {
     this.tree.rotation.z = Math.sin(t * 0.5) * 0.006;
   }
 
-  private reflectScale() { return this.opts.mobile || this.opts.low ? 0.35 : 0.5; }
+  private reflectScale() { return this.opts.mobile || this.opts.low ? 0.22 : 0.32; }
 
   resize(w: number, h: number, pixelRatio: number) {
     const s = this.reflectScale();

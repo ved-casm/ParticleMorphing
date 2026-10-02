@@ -301,9 +301,9 @@ export class ParticleMorph {
     const gl = this.renderer.getContext(), info = gl.getExtension("WEBGL_debug_renderer_info");
     const gpuName = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : "";
     const low = !opts.mobile && /swiftshader|llvmpipe|basic render|intel(?!.*arc)/i.test(gpuName);
-    this.size = opts.mobile ? 150 : low ? 200 : 240;
+    this.size = opts.mobile ? 110 : low ? 140 : 170;
     this.count = this.size * this.size;
-    const pr = Math.min(devicePixelRatio, opts.mobile ? 1.5 : low ? 1.25 : 1.75);
+    const pr = Math.min(devicePixelRatio, opts.mobile ? 1.25 : low ? 1 : 1.35);
     this.renderer.setPixelRatio(pr);
     this.renderer.toneMapping = THREE.NoToneMapping;
     container.appendChild(this.renderer.domElement);
@@ -359,7 +359,7 @@ export class ParticleMorph {
     this.pointMat = new THREE.ShaderMaterial({
       vertexShader: POINT_VERT, fragmentShader: POINT_FRAG, depthTest: true, depthWrite: true, transparent: true,
       uniforms: {
-        tPos: { value: null }, uSize: { value: opts.mobile ? 3.4 : 3.1 }, uPixelRatio: { value: pr },
+        tPos: { value: null }, uSize: { value: opts.mobile ? 4.2 : 3.9 }, uPixelRatio: { value: pr },
         uLight: { value: new THREE.Vector3() }, uHalf: { value: new THREE.Vector3() },
         uAccent: { value: this.accent }, uGlow: { value: srgb("#8fd6ff") }, uRim: { value: srgb("#6fa8ff") },
         uHoverColor: { value: srgb("#b9ecff") }, uMouse: { value: new THREE.Vector2(9, 9) }, uAspect: { value: 1 }, uHover: { value: 0 },
@@ -371,7 +371,7 @@ export class ParticleMorph {
     this.camera.add(this.points);
 
     // Heartbeat sparks (live in the particles' local space so they follow the shape).
-    this.sparkCount = opts.mobile ? 1200 : 3000;
+    this.sparkCount = opts.mobile ? 600 : 1500;
     const sg = new THREE.BufferGeometry(), n = this.sparkCount;
     sg.setAttribute("position", new THREE.BufferAttribute(new Float32Array(n * 3), 3));
     sg.setAttribute("aSpawn", new THREE.BufferAttribute(new Float32Array(n).fill(-1), 1));
@@ -390,7 +390,8 @@ export class ParticleMorph {
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), opts.mobile ? 0.42 : 0.5, 0.45, 0.55);
-    this.composer.addPass(this.bloom);
+    // Bloom is several full-screen passes: skip it on phones and integrated GPUs.
+    if (!opts.mobile && !low) this.composer.addPass(this.bloom);
     this.composer.addPass(new OutputPass());
 
     this.resize();
@@ -494,7 +495,7 @@ export class ParticleMorph {
     this.composer.setSize(w, h);
     this.env.resize(w, h, this.renderer.getPixelRatio());
     this.camera.aspect = w / h;
-    this.camera.fov = w < 760 ? 48 : 35;
+    this.camera.fov = w < 760 || w / h < 0.9 ? 48 : 35;
     this.camera.updateProjectionMatrix();
     this.velVar.material.uniforms.uAspect.value = w / h;
     this.pointMat.uniforms.uAspect.value = w / h;

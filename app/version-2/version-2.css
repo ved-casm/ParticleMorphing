@@ -55,6 +55,7 @@
 .dm-cta svg { transition: transform .3s; }
 .dm-cta:hover svg { transform: translate(2px, -2px); }
 .dm-menu { display: none; }
+.dm-links .dm-links-home { display: none; }
 @media (min-width: 1100px) {
   .dm-back { display: inline-flex; align-items: center; gap: 8px; position: fixed; left: var(--dm-pad); bottom: 26px; font: 500 10px var(--font-dm-mono), monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--dm-muted); }
   .dm-back:hover { color: var(--dm-ink); }
@@ -158,6 +159,7 @@
   .dm-nav { grid-template-columns: 1fr auto; }
   .dm-links { display: none; position: fixed; top: 70px; left: var(--dm-pad); right: var(--dm-pad); flex-direction: column; padding: 8px; }
   .dm-links.open { display: flex; }
+  .dm-links .dm-links-home { display: block; border-top: 1px solid var(--dm-line); border-radius: 0; margin-top: 4px; }
   .dm-links a { padding: 14px; }
   .dm-cta { display: none; }
   .dm-menu { grid-column: 2; display: grid; gap: 5px; width: 42px; height: 42px; place-content: center; border-radius: 12px; border: 1px solid var(--dm-line); background: var(--dm-glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
@@ -180,6 +182,8 @@
   .dm-contact .dm-block { margin-top: 38vh; }
   .dm-footer { flex-direction: column; align-items: center; }
   .dm-services li { font-size: 16px; }
+  .dm-services { padding: 4px 16px; border-radius: 14px; background: rgba(4, 7, 18, 0.62); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .dm-services li:first-child { border-top: 0; }
 }
 
 @media (max-width: 600px) {

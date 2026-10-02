@@ -17,7 +17,7 @@ const SECTIONS: Section[] = [
   { id: "precision", label: "Precision", shape: "cube", orbit: 1.0, desk: { x: -3.3, y: 0.1, scale: 0.95 }, mob: { x: 0, y: 2.3, scale: 0.68 } },
   { id: "people", label: "People", shape: "heart", orbit: 1.35, desk: { x: 0, y: 1.2, scale: 0.9 }, mob: { x: 0, y: 2.1, scale: 0.7 } },
   { id: "playground", label: "Playground", shape: "play", orbit: 1.35, desk: { x: 0, y: 0.75, scale: 0.68 }, mob: { x: 0, y: 1.9, scale: 0.62 } },
-  { id: "services", label: "Services", shape: "knot", orbit: 1.8, desk: { x: 3.4, y: 0, scale: 0.85 }, mob: { x: 0, y: 3.2, scale: 0.55 } },
+  { id: "services", label: "Services", shape: "knot", orbit: 1.8, desk: { x: 3.4, y: 0, scale: 0.85 }, mob: { x: 0, y: 4.4, scale: 0.42 } },
   { id: "contact", label: "Contact", shape: "galaxy", orbit: 2.3, desk: { x: 0, y: 2.3, scale: 0.82 }, mob: { x: 0, y: 3, scale: 0.7 } },
 ];
 
@@ -69,7 +69,8 @@ export default function DemoExperience() {
   const sync = () => {
     const e = engine.current, s = SECTIONS[state.current.active];
     if (!e) return;
-    const mobile = innerWidth < 760;
+    // Phones and portrait tablets both use the stacked layout.
+    const mobile = innerWidth < 760 || innerWidth / innerHeight < 0.9;
     // Narrow phones: shrink so wide shapes (the wordmark, typed words) stay inside the screen.
     const fit = Math.min(1, Math.max(0.55, innerWidth / innerHeight / 0.8));
     e.setLayout(mobile ? { ...s.mob, scale: s.mob.scale * fit } : s.desk);
@@ -150,11 +151,12 @@ export default function DemoExperience() {
     </div>
 
     <header className="dm-nav">
-      <Link href="/" className="dm-back"><ArrowLeft size={14} /> <span>Main site</span></Link>
+      <Link href="/" className="dm-back"><ArrowLeft size={14} /> <span>All versions</span></Link>
       <a href="#top" className="dm-mark" aria-label="Back to top">owow<i /></a>
       <nav className={`dm-links ${menu ? "open" : ""}`} aria-label="Demo sections">
         {SECTIONS.filter(s => ["world", "precision", "playground", "contact"].includes(s.id)).map(s =>
           <a key={s.id} href={`#${s.id}`} onClick={() => setMenu(false)} className={SECTIONS[active].id === s.id ? "is-active" : ""}>{s.label}</a>)}
+        <Link href="/" className="dm-links-home">All versions</Link>
       </nav>
       <a href="#contact" className="dm-cta"><span>Let&apos;s build</span><ArrowUpRight size={14} /></a>
       <button className="dm-menu" aria-expanded={menu} aria-label="Toggle sections" onClick={() => setMenu(!menu)}><span /><span /></button>
@@ -256,7 +258,7 @@ export default function DemoExperience() {
           <span className="dm-tag">Stay in touch</span>
           <h2 className="dm-display dm-center"><Lines>{["LET’S BUILD"]}</Lines><span className="dm-indent"><CornerDownRight size={28} /> <Lines>{["SOMETHING"]}</Lines></span><Lines>{["HUMAN"]}</Lines></h2>
           <p className="dm-mono">HAVE A TASK, A ROBOT OR A VISION? LET’S GIVE IT THE EXPERIENCE IT NEEDS.</p>
-          <Link href="/#contact" className="dm-button">Start a project <ArrowUpRight size={15} /></Link>
+          <Link href="/version-1#contact" className="dm-button">Start a project <ArrowUpRight size={15} /></Link>
         </div>
         <footer className="dm-footer dm-mono">
           <span>© {new Date().getFullYear()} OWOW — PARTICLE DEMO</span>

@@ -266,7 +266,7 @@ export function WebGLRendererConfig() {
   const { gl, size } = useThree();
 
   useEffect(() => {
-    gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
     gl.setSize(size.width, size.height);
     gl.setClearColor(0x000000, 0);
   }, [gl, size]);
@@ -280,7 +280,7 @@ export function World(props: WorldProps) {
 
 
   return (
-    <Canvas frameloop={props.active === false ? "never" : "always"} dpr={[1, 1.5]} camera={{ fov: 45, near: 0.1, far: 2000, position: [0, 0, cameraZ] }} gl={{ alpha: true, antialias: true }} fallback={<div className="globe-loading">A world of human experience</div>}>
+    <Canvas frameloop={props.active === false ? "never" : "always"} dpr={[1, 1.25]} camera={{ fov: 45, near: 0.1, far: 2000, position: [0, 0, cameraZ] }} gl={{ alpha: true, antialias: false, powerPreference: "high-performance" }} fallback={<div className="globe-loading">A world of human experience</div>}>
       <WebGLRendererConfig />
       <ambientLight color={globeConfig.ambientLight || "#38bdf8"} intensity={0.7} />
       <directionalLight
