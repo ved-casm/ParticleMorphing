@@ -1,5 +1,5 @@
-import DemoExperience from "@/components/demo/demo-experience";
+import Demo1Experience from "@/components/demo1/demo1-experience";
 
-export default function DemoPage() {
-  return <DemoExperience />;
+export default function Demo1Page() {
+  return <Demo1Experience />;
 }

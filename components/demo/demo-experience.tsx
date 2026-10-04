@@ -145,7 +145,7 @@ export default function DemoExperience() {
     {failed && <div className="dm-fallback" aria-hidden="true" />}
 
     <div className={`dm-loader ${ready ? "is-done" : ""}`} aria-hidden={ready}>
-      <div className="dm-loader-mark">O’WOW<span>v2</span></div>
+      <div className="dm-loader-mark">O’WOW<span>v1</span></div>
       <p>DATA INTELLIGENCE FOR<br />PHYSICAL AI</p>
       <div className="dm-loader-bar"><span style={{ transform: `scaleX(${ready ? 1 : loading / 100})` }} /></div>
       <div className="dm-loader-meta"><span>LOADING THE STORY..</span><b>{String(Math.round(ready ? 100 : loading)).padStart(3, "0")}%</b><span>100%</span></div>

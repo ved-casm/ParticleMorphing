@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react";
  * so the pixels "resolve" toward the real thing.
  */
 
-export type Variant = "globe" | "morph" | "depth";
+export type Variant = "morph" | "depth";
 
 const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(v => (v + 0.5) / 16);
 // Fine pixels by default (crisp, not 8-bit chunky); hovering resolves further.
@@ -18,33 +18,8 @@ function hash(x: number, y: number) {
   const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
   return s - Math.floor(s);
 }
-function noise(x: number, y: number) {
-  const xi = Math.floor(x), yi = Math.floor(y), fx = x - xi, fy = y - yi;
-  const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy);
-  const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
-  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
-}
 
-// Version 1: a dotted globe, sage on near-black, slowly turning.
-function drawGlobe(px: Uint8ClampedArray, w: number, h: number, t: number) {
-  const r = Math.min(w, h) * 0.38, cx = w / 2, cy = h * 0.52, rot = t * 0.25;
-  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-    const i = (y * w + x) * 4, dx = (x + 0.5 - cx) / r, dy = (y + 0.5 - cy) / r, d2 = dx * dx + dy * dy;
-    let c = [8, 10, 9];
-    if (d2 < 1) {
-      const z = Math.sqrt(1 - d2), lon = Math.atan2(dx, z) + rot, lat = Math.asin(-dy);
-      const land = noise(lon * 2.2 + 10, lat * 3.2) * 0.65 + noise(lon * 5, lat * 6) * 0.35;
-      const light = 0.45 + 0.55 * z;
-      const dot = (x + y) % 2 === 0;
-      if (land > 0.52 && dot) c = [173 * light, 186 * light, 172 * light];
-      else if (dot && hash(x, y) > 0.86) c = [40, 52, 44];
-      else c = [12, 17, 14];
-    } else if (d2 < 1.12) c = [26 * (1.12 - d2) / 0.12 + 8, 36 * (1.12 - d2) / 0.12 + 10, 30 * (1.12 - d2) / 0.12 + 9];
-    px[i] = c[0]; px[i + 1] = c[1]; px[i + 2] = c[2]; px[i + 3] = 255;
-  }
-}
-
-// Version 2: blue particles morphing sphere -> cube -> heart.
+// Version 1: blue particles morphing sphere -> cube -> heart.
 const MORPH_N = 3200;
 const SEEDS = Array.from({ length: MORPH_N }, (_, i) => [hash(i, 1), hash(i, 2), hash(i, 3)]);
 function shapePoint(kind: number, s: number[]): [number, number, number] {
@@ -76,7 +51,7 @@ function drawMorph(px: Uint8ClampedArray, w: number, h: number, t: number, acc: 
   }
 }
 
-// Version 3: the depth clip, ordered-dithered into white stipple. Frames come from a small
+// Version 2: the depth clip, ordered-dithered into white stipple. Frames come from a small
 // sprite atlas (no <video>: browsers won't reliably play a detached, unseen video).
 const ATLAS = { src: "/demo1/android-atlas.webp", frames: 30, cols: 6, w: 96, h: 120, fps: 10 };
 let probe: CanvasRenderingContext2D | null = null;
@@ -135,8 +110,7 @@ export default function PixelPreview({ variant, active }: { variant: Variant; ac
       const rows = Math.max(8, Math.round(cols * (el.clientHeight || 5) / (el.clientWidth || 4)));
       if (el.width !== cols || el.height !== rows) { el.width = cols; el.height = rows; acc = new Float32Array(cols * rows); }
       const img = ctx.createImageData(cols, rows);
-      if (variant === "globe") drawGlobe(img.data, cols, rows, t);
-      else if (variant === "morph") drawMorph(img.data, cols, rows, t, acc);
+      if (variant === "morph") drawMorph(img.data, cols, rows, t, acc);
       else drawDepth(img.data, cols, rows, atlas, t);
       ctx.putImageData(img, 0, 0);
     };

@@ -8,8 +8,8 @@ const mono = IBM_Plex_Mono({ variable: "--font-vh-mono", subsets: ["latin"], wei
 const pixel = Silkscreen({ variable: "--font-vh-pixel", subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
-  title: "O’WOW — Three versions",
-  description: "Three directions for the OWOW website: The World, Particle Morph and Depth Field.",
+  title: "O’WOW — Versions",
+  description: "Two directions for the O’WOW website: Particle Morph and Depth Field.",
 };
 
 export default function Home() {

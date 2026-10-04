@@ -6,9 +6,8 @@ import { ArrowUpRight } from "lucide-react";
 import PixelPreview, { type Variant } from "./pixel-preview";
 
 const VERSIONS: { n: string; href: string; variant: Variant; title: string; text: string; tags: string[] }[] = [
-  { n: "01", href: "/version-1", variant: "globe", title: "The World", text: "A dotted globe, a scroll-driven story and an interactive prompt. Calm, editorial, sage on black.", tags: ["Globe", "Scroll story", "Prompt demo"] },
-  { n: "02", href: "/version-2", variant: "morph", title: "Particle Morph", text: "Thousands of particles morph between shapes above a night lake, with grass, rocks and a glowing tree.", tags: ["GPGPU", "3D world", "Playground"] },
-  { n: "03", href: "/version-3", variant: "depth", title: "Depth Field", text: "Real human demonstrations rendered as depth particles. Scroll scrubs the footage frame by frame.", tags: ["Depth video", "Stippling", "Story"] },
+  { n: "01", href: "/version-1", variant: "morph", title: "Particle Morph", text: "Thousands of particles morph between shapes above a night lake, with grass, rocks and a glowing tree.", tags: ["GPGPU", "3D world", "Playground"] },
+  { n: "02", href: "/version-2", variant: "depth", title: "Depth Field", text: "Real human demonstrations rendered as depth particles. Scroll scrubs the footage frame by frame.", tags: ["Depth video", "Stippling", "Story"] },
 ];
 
 function Card({ v }: { v: (typeof VERSIONS)[number] }) {
@@ -40,12 +39,12 @@ export default function VersionsHub() {
   return <main className="vh-root">
     <header className="vh-head">
       <span className="vh-mark">O’WOW<i /></span>
-      <span className="vh-mono">Three directions · {new Date().getFullYear()}</span>
+      <span className="vh-mono">Two directions · {new Date().getFullYear()}</span>
     </header>
     <section className="vh-intro">
       <span className="vh-mono">Human experience · Robot intelligence</span>
-      <h1>One story.<br /><span>Three directions.</span></h1>
-      <p>Pick a version to explore. Each one tells the OWOW story in its own visual language.</p>
+      <h1>One story.<br /><span>Two directions.</span></h1>
+      <p>Pick a version to explore. Each one tells the O’WOW story in its own visual language.</p>
     </section>
     <section className="vh-grid" aria-label="Website versions">
       {VERSIONS.map(v => <Card key={v.n} v={v} />)}
